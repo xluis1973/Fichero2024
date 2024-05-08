@@ -18,9 +18,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 
 public class MostrarActivityViewModel extends AndroidViewModel {
 private MutableLiveData<String> mPersona;
+
     public MostrarActivityViewModel(@NonNull Application application) {
         super(application);
     }
@@ -31,6 +33,8 @@ private MutableLiveData<String> mPersona;
         }
         return mPersona;
     }
+
+
 
     public void leerBytes(){
         File archivo=new File(getApplication().getFilesDir(),"datos.dat");
@@ -101,5 +105,45 @@ private MutableLiveData<String> mPersona;
 
 
     }
+
+    public void leerObjetos(){
+        StringBuilder sb=new StringBuilder();
+        File archivo=new File(getApplication().getFilesDir(),"fichero.dat");
+        //Nodo
+        try {
+            FileInputStream fis=new FileInputStream(archivo);
+            BufferedInputStream bis=new BufferedInputStream(fis);
+            ObjectInputStream ois=new ObjectInputStream(bis);
+
+
+            while(true){
+                try {
+                    Persona per = (Persona) ois.readObject();
+                    String nombre = per.getNombre();
+                    String apellido = per.getApellido();
+                    long dni = per.getDni();
+                    int edad = per.getEdad();
+                    sb.append(nombre + " " + apellido + " " + dni + " " + edad + " " +  "\n");
+                }catch (EOFException eof){
+                    mPersona.setValue(sb.toString());
+                    fis.close();
+                    break;
+                }
+
+            }
+
+
+        } catch (FileNotFoundException e) {
+            Toast.makeText(getApplication(),"Error de File",Toast.LENGTH_LONG).show();
+            Log.d("salida ",e.getMessage());
+        } catch (IOException e) {
+            Toast.makeText(getApplication(),"Error de E/s",Toast.LENGTH_LONG).show();
+            Log.d("salida ",e.toString());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            Toast.makeText(getApplication(),"Error al recuperar datos",Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 }

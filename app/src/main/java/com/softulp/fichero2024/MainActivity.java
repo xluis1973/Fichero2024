@@ -40,7 +40,8 @@ private ActivityMainBinding binding;
                 long dni=Long.parseLong(binding.etDni.getText().toString());
                 int edad=Integer.parseInt(binding.etEdad.getText().toString());
                 //mv.guardarBytes(nombre,apellido,dni,edad);
-                mv.guardarPrimitivos(nombre,apellido,dni,edad);
+                //mv.guardarPrimitivos(nombre,apellido,dni,edad);
+                mv.guardarObjeto(nombre,apellido,dni,edad);
             }
         });
     }

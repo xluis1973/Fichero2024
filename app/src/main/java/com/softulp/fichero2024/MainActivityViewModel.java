@@ -65,4 +65,75 @@ public class MainActivityViewModel extends AndroidViewModel {
 
 
     }
+
+    public void guardarObjeto(String nombre, String apellido, long dni,int edad){
+        Persona persona=new Persona(nombre,apellido,dni,edad);
+        File archivo=new File(context.getFilesDir(),"fichero.dat");
+
+        if(archivo.length()==0){
+            try {
+                FileOutputStream fos=new FileOutputStream(archivo,true);
+                BufferedOutputStream bos=new BufferedOutputStream(fos);
+                ObjectOutputStream oos=new ObjectOutputStream(bos);
+                oos.writeObject(persona);
+
+
+                bos.flush();
+                fos.close();
+                persona=null;
+
+                Toast.makeText(context,"Dato guardado",Toast.LENGTH_LONG).show();
+
+
+            } catch (FileNotFoundException e) {
+                Toast.makeText(context,"Error al acceder al archivo",Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(context,"Error al acceder al archivo",Toast.LENGTH_LONG).show();
+            }
+        }else{
+            try {
+                FileOutputStream fos=new FileOutputStream(archivo,true);
+                BufferedOutputStream bos=new BufferedOutputStream(fos);
+                MyObjectOutputStream oos=new MyObjectOutputStream(bos);
+                oos.writeObject(persona);
+
+
+                bos.flush();
+                fos.close();
+                persona=null;
+
+                Toast.makeText(context,"Dato guardado",Toast.LENGTH_LONG).show();
+
+
+            } catch (FileNotFoundException e) {
+                Toast.makeText(context,"Error al acceder al archivo",Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(context,"Error al acceder al archivo",Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+
+    }
+    class MyObjectOutputStream extends ObjectOutputStream {
+
+
+        MyObjectOutputStream() throws IOException
+        {
+
+
+            super();
+        }
+
+
+        MyObjectOutputStream(OutputStream o) throws IOException
+        {
+            super(o);
+        }
+
+        public void writeStreamHeader() throws IOException
+        {
+            return;
+        }
+    }
 }

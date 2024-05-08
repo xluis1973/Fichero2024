@@ -30,6 +30,7 @@ private ActivityMostrarBinding binding;
         });
 
         //mv.leerBytes();
-        mv.leerPrimitivos();
+        //mv.leerPrimitivos();
+        mv.leerObjetos();
     }
 }
